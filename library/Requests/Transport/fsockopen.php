@@ -162,17 +162,12 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 			if (!empty($data) || $options['type'] === Requests::POST) {
 				if (!isset($case_insensitive_headers['Content-Length'])) {
+					// Prevent 411 errors from some servers when the body is empty.
 					$headers['Content-Length'] = strlen($request_body);
 				}
 
 				if (!isset($case_insensitive_headers['Content-Type'])) {
 					$headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
-				}
-			}
-			elseif($options['type'] === Requests::POST) {
-				if (!isset($case_insensitive_headers['Content-Length'])) {
-					// Prevent 411 errors from some servers
-					$headers['Content-Length'] = 0;
 				}
 			}
 		}
